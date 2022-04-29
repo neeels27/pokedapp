@@ -14,7 +14,9 @@ import Slider from '@react-native-community/slider'
 
 const { width, height } = Dimensions.get('window')
 
-const Details = () => {
+const Details = ({ route }) => {
+    const { musicTitle } = route.params
+
     return (
         <SafeAreaView style={style.container}>
             <View style={style.maincontainer}>

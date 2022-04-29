@@ -15,13 +15,14 @@ const StackNavigator = () => {
                 <Stack.Screen
                     name="Details"
                     component={Details}
-                    options={{
+                    options={({ route }) => ({
                         headerStyle: {
                             backgroundColor: '#222831',
                         },
                         headerBackTitle: 'Retour',
                         headerTintColor: '#ff7675',
-                    }}
+                        title: route.params.musicTitle,
+                    })}
                 />
             </Stack.Navigator>
         </NavigationContainer>
