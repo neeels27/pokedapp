@@ -25,17 +25,17 @@ export const MusicContextProvider = ({ children }) => {
         AsyncStorage.setItem('favlist', JSON.stringify(favlist))
     }, [favlist])
 
-    const addOrRemoveToFavlist = title => {
-        const alreadyFavlisted = favlist.findIndex(el => el === title)
+    const addOrRemoveToFavlist = music => {
+        const alreadyFavlisted = favlist.findIndex(el => el.id === music.id)
 
         if (alreadyFavlisted !== -1) {
-            setFavlist(favlist.filter(el => el !== title))
+            setFavlist(favlist.filter(el => el.id !== music.id))
             showMessage({
                 message: 'Retiré de la favorite list',
                 type: 'info',
             })
         } else {
-            setFavlist([...favlist, title])
+            setFavlist([...favlist, music])
             showMessage({
                 message: 'Ajouté de la favorite list',
                 type: 'info',

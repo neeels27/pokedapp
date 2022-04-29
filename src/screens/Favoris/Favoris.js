@@ -1,4 +1,4 @@
-import { View, FlatList, StyleSheet, SafeAreaView } from 'react-native'
+import { FlatList, StyleSheet, SafeAreaView, View, Text } from 'react-native'
 import React, { useContext } from 'react'
 
 import MusicContext from '../../contexts/MusicContext'
@@ -14,23 +14,25 @@ const Favoris = ({ navigation }) => {
                     data={favlist}
                     renderItem={({ item }) => (
                         <Button
-                            title={item}
+                            title={`${item.title} - ${item.artist}`}
                             onPress={() =>
                                 navigation.navigate('Details', {
-                                    musicTitle: item,
+                                    music: item,
                                 })
                             }
                             style={{ bgColor: '#ff7675' }}
                         />
                     )}
                     contentContainerStyle={{ marginTop: 10 }}
-                    keyExtractor={item => item}
+                    keyExtractor={item => item.id}
                     showsVerticalScrollIndicator={false}
                 />
             ) : (
-                <Margin mt={20} mb={20}>
-                    <PText>Vous n'avez rien en favlist</PText>
-                </Margin>
+                <View>
+                    <Text style={{ color: 'white', fontWeight: 'bold', textAlign: 'center' }}>
+                        Vous n'avez rien en favlist
+                    </Text>
+                </View>
             )}
         </SafeAreaView>
     )

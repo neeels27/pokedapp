@@ -16,7 +16,7 @@ const style = StyleSheet.create({
         color: '#EEEEEE',
     },
     songTitle: {
-        fontsize: 18,
+        fontSize: 18,
         fontWeight: '600',
         textAlign: 'center',
         color: '#EEEEEE',
