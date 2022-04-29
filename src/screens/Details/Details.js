@@ -1,5 +1,5 @@
 import { View, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import TrackPlayer, { State } from 'react-native-track-player'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 Ionicon.loadFont()
@@ -11,6 +11,8 @@ import ActionButtons from '../../components/ActionButtons'
 
 const Details = ({ route }) => {
     const { music } = route.params
+
+    const [currentState, setCurrentState] = useState(true)
 
     const setUpPlayer = async () => {
         try {
@@ -28,12 +30,18 @@ const Details = ({ route }) => {
         }
     }
     const togglePlayack = async () => {
-        if (State.Paused) {
+        if (currentState) {
             await TrackPlayer.play()
+            setCurrentState(true)
         } else {
             await TrackPlayer.pause()
+            setCurrentState(false)
         }
     }
+
+    useEffect(() => {
+        console.log(currentState)
+    }, [currentState])
 
     useEffect(() => {
         setUpPlayer()
@@ -50,16 +58,15 @@ const Details = ({ route }) => {
                 <SongInfo title={music.title} artist={music.artist} />
                 <SliderMusic />
 
-                {/* music controls*/}
+                {/* music controls */}
                 <View style={style.MusicControlsContainer}>
-                    <TouchableOpacity onPress={() => togglePlayack()}>
-                        {State.Paused ? (
+                    <TouchableOpacity onPress={togglePlayack}>
+                        {currentState ? (
                             <Ionicon name="play-outline" size={60} color="#ff7675"></Ionicon>
                         ) : (
                             <Ionicon name="pause-outline" size={60} color="#ff7675"></Ionicon>
                         )}
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => console.log('ok')}></TouchableOpacity>
                 </View>
             </View>
             <ActionButtons music={music} />
