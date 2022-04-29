@@ -7,7 +7,7 @@ import {
     Dimensions,
     Share,
 } from 'react-native'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import TrackPlayer, { State } from 'react-native-track-player'
 import Slider from '@react-native-community/slider'
 import Ionicon from 'react-native-vector-icons/Ionicons'
@@ -17,26 +17,41 @@ import MusicContext from '../../contexts/MusicContext'
 import SongInfo from '../../components/SongInfo'
 import CoverMusic from '../../components/CoverMusic'
 
-const { width, height } = Dimensions.get('window')
+const { width } = Dimensions.get('window')
 
-const setUpPlayer = async () => {
-    try {
-        await TrackPlayer.setupPlayer()
-        await TrackPlayer.add(songs)
-    } catch (e) {
-        console.log(e)
-    }
-}
-const togglePlayack = async playBackState => {
-    const currentTrack = await TrackPlayer.getCurrentTrack()
-    if (playBackState == State.Paused) {
-        await TrackPlayer.play()
-    } else {
-        await TrackPlayer.pause()
-    }
-}
 const Details = ({ route }) => {
     const { music } = route.params
+
+    const setUpPlayer = async () => {
+        try {
+            await TrackPlayer.setupPlayer()
+            await TrackPlayer.add({
+                id: music.id,
+                url: music.music,
+                title: music.title,
+                artist: music.artist,
+                artwork: music.artwork,
+            })
+            TrackPlayer.play()
+        } catch (e) {
+            console.log(e)
+        }
+    }
+    const togglePlayack = async () => {
+        if (State.Paused) {
+            await TrackPlayer.play()
+        } else {
+            await TrackPlayer.pause()
+        }
+    }
+
+    useEffect(() => {
+        setUpPlayer()
+
+        return () => {
+            TrackPlayer.stop()
+        }
+    }, [])
 
     const { favlist, addOrRemoveToFavlist } = useContext(MusicContext)
 
@@ -83,21 +98,14 @@ const Details = ({ route }) => {
                 {/* music controls*/}
 
                 <View style={style.MusicControlsContainer}>
-                    <TouchableOpacity onPress={() => console.log('ok')}>
-                        <Ionicon name="play-back-outline" size={40} color="#ff7675"></Ionicon>
-                    </TouchableOpacity>
-                    {State.Paused ? (
-                        <TouchableOpacity onPress={() => console.log('ok')}>
+                    <TouchableOpacity onPress={() => togglePlayack()}>
+                        {State.Paused ? (
                             <Ionicon name="play-outline" size={60} color="#ff7675"></Ionicon>
-                        </TouchableOpacity>
-                    ) : (
-                        <TouchableOpacity onPress={() => console.log('ok')}>
+                        ) : (
                             <Ionicon name="pause-outline" size={60} color="#ff7675"></Ionicon>
-                        </TouchableOpacity>
-                    )}
-                    <TouchableOpacity onPress={() => console.log('ok')}>
-                        <Ionicon name="play-forward-outline" size={40} color="#ff7675"></Ionicon>
+                        )}
                     </TouchableOpacity>
+                    <TouchableOpacity onPress={() => console.log('ok')}></TouchableOpacity>
                 </View>
             </View>
             <View style={style.bottomContainer}>
@@ -165,7 +173,7 @@ const style = StyleSheet.create({
     MusicControlsContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         width: '45%',
     },
 })
