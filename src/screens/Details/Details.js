@@ -58,30 +58,24 @@ const Details = ({ route }) => {
                 {/* music controls*/}
 
                 <View style={style.MusicControlsContainer}>
-                    <TouchableOpacity onPress={() => {}}>
-                        <Ionicon name="heart-outline" size={30} color="#88888" />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => {}}>
-                        <Ionicon name="heart-outline" size={30} color="#88888" />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => {}}>
-                        <Ionicon name="heart-outline" size={30} color="#88888" />
+                    <TouchableOpacity onPress={() => console.log('ok')}>
+                        <Ionicon name="heart-outline" size={30} color="#ff7675" />
                     </TouchableOpacity>
                 </View>
             </View>
             <View style={style.bottomContainer}>
                 <View style={style.bottomIconWrapper}>
                     <TouchableOpacity onPress={() => {}}>
-                        <Ionicon name="heart-outline" size={30} color="#88888" />
+                        <Ionicon name="heart-outline" size={30} color="#ff7675" />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {}}>
-                        <Ionicon name="repeat" size={30} color="#88888" />
+                        <Ionicon name="repeat" size={30} color="#ff7675" />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {}}>
-                        <Ionicon name="share-outline" size={30} color="#88888" />
+                        <Ionicon name="share-outline" size={30} color="#ff7675" />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {}}>
-                        <Ionicon name="ellipsis-horizontal" size={30} color="#88888" />
+                        <Ionicon name="ellipsis-horizontal" size={30} color="#ff7675" />
                     </TouchableOpacity>
                 </View>
             </View>

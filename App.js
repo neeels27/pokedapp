@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native'
+import FlashMessage from 'react-native-flash-message'
 import SplashScreen from 'react-native-splash-screen'
 
 import StackNavigator from './src/configs/routes'
+
+import { MusicContextProvider } from './src/contexts/MusicContext'
 
 const App = () => {
     useEffect(() => {
@@ -10,9 +13,10 @@ const App = () => {
     }, [])
 
     return (
-        <View style={style.container}>
+        <MusicContextProvider>
             <StackNavigator />
-        </View>
+            <FlashMessage position="top" />
+        </MusicContextProvider>
     )
 }
 
