@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import TabBar from './TabBar'
+import Details from '../../screens/Details/Details'
 
 const Stack = createNativeStackNavigator()
 
@@ -11,6 +12,17 @@ const StackNavigator = () => {
         <NavigationContainer>
             <Stack.Navigator>
                 <Stack.Screen name="TabBar" component={TabBar} options={{ headerShown: false }} />
+                <Stack.Screen
+                    name="Details"
+                    component={Details}
+                    options={{
+                        headerStyle: {
+                            backgroundColor: '#222831',
+                        },
+                        headerBackTitle: 'Retour',
+                        headerTintColor: '#ff7675',
+                    }}
+                />
             </Stack.Navigator>
         </NavigationContainer>
     )

@@ -1,10 +1,20 @@
-import { Text, StyleSheet, SafeAreaView } from 'react-native'
+import { StyleSheet, SafeAreaView } from 'react-native'
 import React from 'react'
 
-const Home = () => {
+import { Button } from '../../components/Button'
+
+const Home = ({ navigation }) => {
     return (
         <SafeAreaView style={style.container}>
-            <Text>Home</Text>
+            <Button
+                title="Something is Going On - Godmode"
+                onPress={() =>
+                    navigation.navigate('Details', {
+                        musicTitle: 'Something is Going On - Godmode',
+                    })
+                }
+                style={{ bgColor: 'red' }}
+            />
         </SafeAreaView>
     )
 }

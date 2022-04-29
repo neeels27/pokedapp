@@ -14,7 +14,7 @@ import Slider from '@react-native-community/slider'
 
 const { width, height } = Dimensions.get('window')
 
-const MusicPlayer = () => {
+const Details = () => {
     return (
         <SafeAreaView style={style.container}>
             <View style={style.maincontainer}>
@@ -87,7 +87,7 @@ const MusicPlayer = () => {
     )
 }
 
-export default MusicPlayer
+export default Details
 
 const style = StyleSheet.create({
     container: {
