@@ -29,13 +29,11 @@ const Details = ({ route }) => {
             console.log(e)
         }
     }
-    const togglePlayack = async () => {
+    const togglePlayback = () => {
         if (currentState) {
-            await TrackPlayer.play()
-            setCurrentState(true)
-        } else {
-            await TrackPlayer.pause()
             setCurrentState(false)
+        } else {
+            setCurrentState(true)
         }
     }
 
@@ -60,11 +58,11 @@ const Details = ({ route }) => {
 
                 {/* music controls */}
                 <View style={style.MusicControlsContainer}>
-                    <TouchableOpacity onPress={togglePlayack}>
+                    <TouchableOpacity onPress={togglePlayback}>
                         {currentState ? (
-                            <Ionicon name="play-outline" size={60} color="#ff7675"></Ionicon>
+                            <Ionicon name="play-outline" size={60} color="#ff7675" />
                         ) : (
-                            <Ionicon name="pause-outline" size={60} color="#ff7675"></Ionicon>
+                            <Ionicon name="pause-outline" size={60} color="#ff7675" />
                         )}
                     </TouchableOpacity>
                 </View>
