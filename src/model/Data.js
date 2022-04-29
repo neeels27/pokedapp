@@ -1,4 +1,4 @@
-const songs = [
+export const songs = [
     {
         id: 1,
         title: '19th Floor',

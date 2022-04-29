@@ -5,35 +5,60 @@ import {
     SafeAreaView,
     TouchableOpacity,
     Dimensions,
-    Image,
+    Share,
 } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
+import TrackPlayer, { State } from 'react-native-track-player'
+import Slider from '@react-native-community/slider'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 Ionicon.loadFont()
-import Slider from '@react-native-community/slider'
+
+import MusicContext from '../../contexts/MusicContext'
+import SongInfo from '../../components/SongInfo'
+import CoverMusic from '../../components/CoverMusic'
 
 const { width, height } = Dimensions.get('window')
 
+const setUpPlayer = async () => {
+    try {
+        await TrackPlayer.setupPlayer()
+        await TrackPlayer.add(songs)
+    } catch (e) {
+        console.log(e)
+    }
+}
+const togglePlayack = async playBackState => {
+    const currentTrack = await TrackPlayer.getCurrentTrack()
+    if (playBackState == State.Paused) {
+        await TrackPlayer.play()
+    } else {
+        await TrackPlayer.pause()
+    }
+}
 const Details = ({ route }) => {
-    const { musicTitle } = route.params
+    const { music } = route.params
+
+    const { favlist, addOrRemoveToFavlist } = useContext(MusicContext)
+
+    const alreadyFavlisted = favlist.filter(el => el.id === music.id)
+
+    const onShare = async () => {
+        try {
+            await Share.share({
+                title: 'PokeDApp',
+                message: `Partagez la musique ${music.title} à vos amis 😀`,
+            })
+        } catch (error) {
+            alert(error.message)
+        }
+    }
 
     return (
         <SafeAreaView style={style.container}>
             <View style={style.maincontainer}>
-                {/* image  */}
-                <View style={[style.imageWrapper, style.elevation]}>
-                    <Image
-                        source={require('../../../assets/img/img1.jpg')}
-                        style={style.musicImage}
-                    />
-                </View>
+                <CoverMusic imgUri={music.artwork} />
+                <SongInfo title={music.title} artist={music.artist} />
 
-                {/* song content */}
-
-                <View>
-                    <Text style={[style.songContent, style.songTitle]}> Some Title</Text>
-                    <Text style={[style.songContent, style.songArtist]}> Some Artiste name</Text>
-                </View>
                 {/* slider */}
                 <View>
                     <Slider
@@ -59,23 +84,33 @@ const Details = ({ route }) => {
 
                 <View style={style.MusicControlsContainer}>
                     <TouchableOpacity onPress={() => console.log('ok')}>
-                        <Ionicon name="heart-outline" size={30} color="#ff7675" />
+                        <Ionicon name="play-back-outline" size={40} color="#ff7675"></Ionicon>
+                    </TouchableOpacity>
+                    {State.Paused ? (
+                        <TouchableOpacity onPress={() => console.log('ok')}>
+                            <Ionicon name="play-outline" size={60} color="#ff7675"></Ionicon>
+                        </TouchableOpacity>
+                    ) : (
+                        <TouchableOpacity onPress={() => console.log('ok')}>
+                            <Ionicon name="pause-outline" size={60} color="#ff7675"></Ionicon>
+                        </TouchableOpacity>
+                    )}
+                    <TouchableOpacity onPress={() => console.log('ok')}>
+                        <Ionicon name="play-forward-outline" size={40} color="#ff7675"></Ionicon>
                     </TouchableOpacity>
                 </View>
             </View>
             <View style={style.bottomContainer}>
                 <View style={style.bottomIconWrapper}>
-                    <TouchableOpacity onPress={() => {}}>
-                        <Ionicon name="heart-outline" size={30} color="#ff7675" />
+                    <TouchableOpacity onPress={() => addOrRemoveToFavlist(music)}>
+                        {alreadyFavlisted.length > 0 ? (
+                            <Ionicon name="heart" size={30} color="#ff7675" />
+                        ) : (
+                            <Ionicon name="heart-outline" size={30} color="#ff7675" />
+                        )}
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => {}}>
-                        <Ionicon name="repeat" size={30} color="#ff7675" />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => {}}>
+                    <TouchableOpacity onPress={() => onShare()}>
                         <Ionicon name="share-outline" size={30} color="#ff7675" />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => {}}>
-                        <Ionicon name="ellipsis-horizontal" size={30} color="#ff7675" />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -109,45 +144,6 @@ const style = StyleSheet.create({
         justifyContent: 'space-between',
         width: '80%',
     },
-
-    imageWrapper: {
-        width: 300,
-        height: 340,
-        marginBottom: 25,
-    },
-
-    musicImage: {
-        width: '100%',
-        height: '100%',
-        borderRadius: 15,
-    },
-
-    elevation: {
-        elevation: 5,
-        shadowColor: '#ccc',
-        shadowOffset: {
-            width: 5,
-            height: 5,
-        },
-        shadowOpacity: 0.5,
-        shadowRadius: 3.84,
-    },
-    songContent: {
-        textAlign: 'center',
-        color: '#EEEEEE',
-    },
-    songTitle: {
-        fontsize: 18,
-        fontWeight: '600',
-        textAlign: 'center',
-        color: '#EEEEEE',
-    },
-    songArtist: {
-        fontsize: 16,
-        fontWeight: '300',
-        textAlign: 'center',
-        color: '#EEEEEE',
-    },
     progressBar: {
         width: 350,
         height: 40,
@@ -164,5 +160,12 @@ const style = StyleSheet.create({
     progressBarLabelText: {
         color: '#fff',
         fontWeight: '500',
+    },
+
+    MusicControlsContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '45%',
     },
 })
