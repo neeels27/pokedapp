@@ -1,7 +1,8 @@
 import { View, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import TrackPlayer, { State } from 'react-native-track-player'
+import TrackPlayer, { State, usePlaybackState } from 'react-native-track-player'
 import Ionicon from 'react-native-vector-icons/Ionicons'
+import styled from 'styled-components'
 Ionicon.loadFont()
 
 import SongInfo from '../../components/SongInfo'
@@ -11,7 +12,7 @@ import ActionButtons from '../../components/ActionButtons'
 
 const Details = ({ route }) => {
     const { music } = route.params
-
+    const PlayBackState = usePlaybackState()
     const [currentState, setCurrentState] = useState(true)
 
     const setUpPlayer = async () => {
@@ -37,6 +38,17 @@ const Details = ({ route }) => {
         }
     }
 
+    const togglePlayback2 = async PlayBackState => {
+        const currentTrack = await TrackPlayer.getCurrentTrack()
+        if (currentTrack != null) {
+            if (PlayBackState == State.Paused) {
+                await TrackPlayer.play()
+            } else {
+                await TrackPlayer.pause()
+            }
+        }
+    }
+
     useEffect(() => {
         setUpPlayer()
 
@@ -46,45 +58,44 @@ const Details = ({ route }) => {
     }, [])
 
     return (
-        <SafeAreaView style={style.container}>
-            <View style={style.maincontainer}>
+        <Container>
+            <Maincontainer>
                 <CoverMusic imgUri={music.artwork} />
                 <SongInfo title={music.title} artist={music.artist} />
                 <SliderMusic />
 
                 {/* music controls */}
-                <View style={style.MusicControlsContainer}>
-                    <TouchableOpacity onPress={togglePlayback}>
-                        {currentState ? (
-                            <Ionicon name="play-outline" size={60} color="#ff7675" />
-                        ) : (
-                            <Ionicon name="pause-outline" size={60} color="#ff7675" />
-                        )}
+                <MusicControlsContainer>
+                    <TouchableOpacity onPress={() => togglePlayback2(PlayBackState)}>
+                        <Ionicon
+                            name={PlayBackState === State.Playing ? 'pause-outline' : 'play'}
+                            size={60}
+                            color="#ff7675"
+                        />
                     </TouchableOpacity>
-                </View>
-            </View>
+                </MusicControlsContainer>
+            </Maincontainer>
             <ActionButtons music={music} />
-        </SafeAreaView>
+        </Container>
     )
 }
 
 export default Details
 
-const style = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#222831',
-    },
+const Container = styled.SafeAreaView`
+    flex: 1;
+    background-color: #222831;
+`
 
-    maincontainer: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    MusicControlsContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '45%',
-    },
-})
+const Maincontainer = styled.View`
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+`
+
+const MusicControlsContainer = styled.View`
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 45%;
+`

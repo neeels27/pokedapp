@@ -1,6 +1,7 @@
 import { View, StyleSheet, Dimensions, TouchableOpacity, Share } from 'react-native'
 import React, { useContext } from 'react'
 import Ionicon from 'react-native-vector-icons/Ionicons'
+import styled from 'styled-components'
 
 import MusicContext from '../contexts/MusicContext'
 
@@ -22,8 +23,8 @@ const ActionButtons = ({ music }) => {
         }
     }
     return (
-        <View style={style.bottomContainer}>
-            <View style={style.bottomIconWrapper}>
+        <BottomContainer>
+            <BottomIconWrapper>
                 <TouchableOpacity onPress={() => addOrRemoveToFavlist(music)}>
                     {alreadyFavlisted.length > 0 ? (
                         <Ionicon name="heart" size={30} color="#ff7675" />
@@ -34,25 +35,23 @@ const ActionButtons = ({ music }) => {
                 <TouchableOpacity onPress={() => onShare()}>
                     <Ionicon name="share-outline" size={30} color="#ff7675" />
                 </TouchableOpacity>
-            </View>
-        </View>
+            </BottomIconWrapper>
+        </BottomContainer>
     )
 }
 
-const style = StyleSheet.create({
-    bottomContainer: {
-        width: width,
-        alignItems: 'center',
-        paddingVertical: 15,
-        borderTopColor: '#393E46',
-        borderWitdh: 1,
-    },
+const BottomContainer = styled.View`
+    width;
+    align-items: center;
+    padding-vertical: 15px;
+    border-top-color: #393e46;
+    border-witdh: 1px;
+`
 
-    bottomIconWrapper: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '80%',
-    },
-})
+const BottomIconWrapper = styled.View`
+    flex-direction: row;
+    justify-content: space-between;
+    width: 80%;
+`
 
 export default ActionButtons

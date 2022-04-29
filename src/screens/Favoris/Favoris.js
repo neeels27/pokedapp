@@ -1,6 +1,6 @@
 import { FlatList, StyleSheet, SafeAreaView, View, Text } from 'react-native'
 import React, { useContext } from 'react'
-
+import styled from 'styled-components'
 import MusicContext from '../../contexts/MusicContext'
 import { Button } from '../../components/Button'
 
@@ -8,7 +8,7 @@ const Favoris = ({ navigation }) => {
     const { favlist } = useContext(MusicContext)
 
     return (
-        <SafeAreaView style={style.container}>
+        <Container>
             {favlist.length > 0 ? (
                 <FlatList
                     data={favlist}
@@ -29,23 +29,25 @@ const Favoris = ({ navigation }) => {
                 />
             ) : (
                 <View>
-                    <Text style={{ color: 'white', fontWeight: 'bold', textAlign: 'center' }}>
-                        Vous n'avez rien en favlist
-                    </Text>
+                    <TextFav>Vous n'avez rien en favlist</TextFav>
                 </View>
             )}
-        </SafeAreaView>
+        </Container>
     )
 }
 
 export default Favoris
 
-const style = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#222831',
-        display: 'flex',
-        justifyContent: 'center',
-        paddingHorizontal: 20,
-    },
-})
+const Container = styled.SafeAreaView`
+    flex: 1;
+    background-color: #222831;
+    display: flex;
+    justify-content: center;
+    padding-horizontal: 20px;
+`
+
+const TextFav = styled.Text`
+    color: white;
+    font-weight: bold;
+    text-align: center;
+`

@@ -1,5 +1,6 @@
 import { StyleSheet, SafeAreaView, FlatList } from 'react-native'
 import React from 'react'
+import styled from 'styled-components'
 
 import songs from '../../model/Data'
 
@@ -7,7 +8,7 @@ import { Button } from '../../components/Button'
 
 const Home = ({ navigation }) => {
     return (
-        <SafeAreaView style={style.container}>
+        <Container>
             <FlatList
                 data={songs}
                 renderItem={({ item }) => (
@@ -25,16 +26,14 @@ const Home = ({ navigation }) => {
                 keyExtractor={item => item.id}
                 showsVerticalScrollIndicator={false}
             />
-        </SafeAreaView>
+        </Container>
     )
 }
 
 export default Home
 
-const style = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#222831',
-        paddingHorizontal: 20,
-    },
-})
+const Container = styled.SafeAreaView`
+    flex: 1;
+    background-color: #222831;
+    padding-horizontal: 20px;
+`

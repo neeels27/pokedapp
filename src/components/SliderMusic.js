@@ -1,49 +1,54 @@
 import { View, Text, StyleSheet } from 'react-native'
 import Slider from '@react-native-community/slider'
 import React from 'react'
+import styled from 'styled-components'
+import TrackPlayer, { useProgress } from 'react-native-track-player'
 
 const SliderMusic = () => {
+    const progress = useProgress()
     return (
         <View>
-            <Slider
-                style={style.progressBar}
-                value={5}
+            <ProgressBar
+                value={ProgressBar.position}
                 minimumValue={0}
-                maximumValue={100}
+                maximumValue={progress.duration}
                 thumbTintColor="#ff7675"
                 minimimTrackTintColor="red"
                 maximumTrackTintColor="#2980b9"
-                onSlidingComplete={() => {}}
+                onSlidingComplete={async value => {
+                    await TrackPlayer.seekTo(value)
+                }}
             />
 
-            {/* music progress durations */}
-
-            <View style={style.progressBarLevelDurations}>
-                <Text style={style.progressBarLabelText}> 00:00</Text>
-                <Text style={style.progressBarLabelText}> 3:00</Text>
-            </View>
+            <ProgressBarLevelDurations>
+                <ProgressBarLabelText>
+                    {new Date(progress.position * 1000).toLocaleTimeString().substring(3)}
+                </ProgressBarLabelText>
+                <ProgressBarLabelText>
+                    {new Date((progress.duration - progress.position) * 1000)
+                        .toLocaleTimeString()
+                        .substring(3)}
+                </ProgressBarLabelText>
+            </ProgressBarLevelDurations>
         </View>
     )
 }
 
-const style = StyleSheet.create({
-    progressBar: {
-        width: 350,
-        height: 40,
-        marginTop: 25,
-        flexDirection: 'row',
-    },
+const ProgressBar = styled.Slider`
+    width: 350px;
+    height: 40px;
+    margin-top: 25px;
+    flex-direction: row;
+`
 
-    progressBarLevelDurations: {
-        width: 340,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
+const ProgressBarLevelDurations = styled.View`
+    width: 340px;
+    flex-direction: row;
+    justify-content: space-between;
+`
 
-    progressBarLabelText: {
-        color: '#fff',
-        fontWeight: '500',
-    },
-})
-
+const ProgressBarLabelText = styled.Text`
+    color: #fff;
+    font-weight: 500;
+`
 export default SliderMusic

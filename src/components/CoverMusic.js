@@ -1,37 +1,36 @@
 import { View, StyleSheet, Image } from 'react-native'
 import React from 'react'
+import styled from 'styled-components'
 
 const CoverMusic = ({ imgUri }) => {
     return (
-        <View style={[style.imageWrapper, style.elevation]}>
-            <Image source={imgUri} style={style.musicImage} />
-        </View>
+        <ImageWrapper>
+            <MusicImage source={imgUri} />
+        </ImageWrapper>
     )
 }
 
-const style = StyleSheet.create({
-    imageWrapper: {
-        width: 300,
-        height: 340,
-        marginBottom: 25,
+const ImageWrapper = styled.View`
+    width: 300px;
+    height: 340px;
+    margin-bottom: 25px;
+    elevation: 5deg,
+    shadowColor: #ccc;
+    shadow-offset: {
+        width: 5px;
+        height: 5px;
     },
+    shadow-opacity: 0.5px;
+    shadow-radius: 3.84px;
+`
 
-    musicImage: {
-        width: '100%',
-        height: '100%',
-        borderRadius: 15,
+const MusicImage = styled.Image`
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    shadowOffset: {
+        width: 5px;
+        height: 5px;
     },
-
-    elevation: {
-        elevation: 5,
-        shadowColor: '#ccc',
-        shadowOffset: {
-            width: 5,
-            height: 5,
-        },
-        shadowOpacity: 0.5,
-        shadowRadius: 3.84,
-    },
-})
-
+`
 export default CoverMusic
