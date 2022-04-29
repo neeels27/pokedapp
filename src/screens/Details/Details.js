@@ -24,7 +24,7 @@ const Details = ({ route }) => {
                 artist: music.artist,
                 artwork: music.artwork,
             })
-            TrackPlayer.play()
+            await TrackPlayer.play()
         } catch (e) {
             console.log(e)
         }
@@ -36,10 +36,6 @@ const Details = ({ route }) => {
             setCurrentState(true)
         }
     }
-
-    useEffect(() => {
-        console.log(currentState)
-    }, [currentState])
 
     useEffect(() => {
         setUpPlayer()

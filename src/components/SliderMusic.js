@@ -7,12 +7,12 @@ const SliderMusic = () => {
         <View>
             <Slider
                 style={style.progressBar}
-                value={10}
+                value={5}
                 minimumValue={0}
                 maximumValue={100}
-                thumbTintColor="#FFD369"
-                minimimTrackTintColor="#FFD369"
-                maximumTrackTintColor="#fff"
+                thumbTintColor="#ff7675"
+                minimimTrackTintColor="red"
+                maximumTrackTintColor="#2980b9"
                 onSlidingComplete={() => {}}
             />
 
